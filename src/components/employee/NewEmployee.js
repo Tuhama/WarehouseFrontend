@@ -4,10 +4,11 @@ import EmployeeList from './EmployeeList';
 import {createEmployee} from '../../util/APIUtils';
 
 
-import { Form, Input, Button, Icon,  Col, notification } from 'antd';
+import { Form, Input, Button, Select } from 'antd';
 
 const FormItem = Form.Item;
-const  FormText  = Input;
+const FormText  = Input;
+const Option = Select.Option;
 
 class NewEmployee extends Component {
     constructor(props) {
@@ -164,22 +165,23 @@ class NewEmployee extends Component {
                                 onChange = {this.handleNatIdChange}
                             />
                         </FormItem>
-                        <FormItem validateStatus={this.state.name.validateStatus}
-                                  help={this.state.name.errorMsg} className="index-form-row">
+                        <FormItem validateStatus={this.state.name.department}
+                                  help={this.state.department.errorMsg} className="index-form-row">
 
                             <span style = {{ marginRight: '18px' }}>
+                                &nbsp;القسم:
                                     <Select
                                         name="days"
                                         defaultValue="1"
                                         onChange={this.handlePollDaysChange}
-                                        value={this.state.pollLength.days}
+                                        value={this.state.department}
                                         style={{ width: 60 }} >
                                         {
                                             Array.from(Array(8).keys()).map(i =>
                                                 <Option key={i}>{i}</Option>
                                             )
                                         }
-                                    </Select> &nbsp;Days
+                                    </Select>
 </span>
                         </FormItem>
                         <FormItem className="index-form-row">
