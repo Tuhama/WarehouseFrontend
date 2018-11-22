@@ -1,28 +1,68 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
+
 import './App.css';
+import {Route, withRouter, Switch, Redirect} from 'react-router-dom';
+
+import SideMenu from './components/ui/SideMenu';
+
+import NewPosition from './components/indexes/position/NewPosition';
+import NewDepartment from './components/indexes/department/NewDepartment';
+import NewEmployee from './components/employee/NewEmployee';
+
+import {LocaleProvider, Layout, Row, Col} from 'antd';
+import ar from 'antd/lib/locale-provider/ar_EG';
+
+
+//const { Content } = Layout;
+const { Header, Content, Footer, Sider } = Layout;
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+    render() {
+        return (
+            <LocaleProvider locale={ar}>
+                <Switch>
+
+                    <Layout className="container" style={{direction: 'rtl', minHeight: '100vh'}}>
+                        <Header>Header</Header>
+                        <Layout>
+                            <Sider>
+                                <SideMenu/>
+                            </Sider>
+                            <Content>
+                                <div className="app-content">
+                                    <Route exact path="/" render={(props) => <Redirect to='/position'/>}></Route>
+                                    <Route exact path="/position" component={NewPosition}/>
+                                    <Route exact path="/department" component={NewDepartment}/>
+
+                                    <Route exact path="/employee" component={NewEmployee}/>
+
+
+                                    {/*    <Route exact path="/"
+                               render={(props) => <PollList isAuthenticated={this.state.isAuthenticated}
+                                                            currentUser={this.state.currentUser} handleLogout={this.handleLogout} {...props} />}>
+                        </Route>
+                      <Route path="/login"
+                               render={(props) => <Login onLogin={this.handleLogin} {...props} />}></Route>
+                        <Route path="/signup" component={Signup}></Route>
+                        <Route path="/users/:username"
+                               render={(props) => <Profile isAuthenticated={this.state.isAuthenticated} currentUser={this.state.currentUser} {...props}  />}>
+                        </Route>
+                        <PrivateRoute authenticated={this.state.isAuthenticated} path="/poll/new" component={NewPoll} handleLogout={this.handleLogout}></PrivateRoute>
+                        <Route component={NotFound}></Route>*/}
+
+                                </div>
+                            </Content>
+
+                        </Layout>
+                        <Footer style={{ textAlign: 'center' }}>
+                            ©2018 Created by Team
+                        </Footer>
+                    </Layout>
+
+                </Switch>
+            </LocaleProvider>
+        );
+    }
 }
 
-export default App;
+export default withRouter(App);
