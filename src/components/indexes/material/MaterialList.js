@@ -1,32 +1,28 @@
 import React, {Component} from 'react';
-import {getAllIndexes, deleteIndex} from '../../../util/APIUtils';
+import {getAllIndexes, deleteIndex, deleteEmployee} from '../../../util/APIUtils';
 
-import { Table} from 'antd';
+import { Table, Divider, Tag } from 'antd';
 
-//import LoadingIndicator  from '../common/LoadingIndicator';
-import {Button, Icon, notification} from 'antd';
-//import { POLL_LIST_SIZE } from '../constants';
 import {withRouter} from 'react-router-dom';
-import './DepartmentList.css';
+import './MaterialList.css';
 
 
 
 
 
-
-class DepartmentList extends Component {
+class MaterialList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            departments: [],
+            positions: [],
             isLoading: false
         };
-        this.loadDepartmentList = this.loadDepartmentList.bind(this);
+        this.loadPositionList = this.loadPositionList.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
     }
     async handleDelete(id) {
 
-        let p = deleteIndex("departments",id);
+        let p = deleteIndex("positions",id);
 
         if (!p) {
             return;
@@ -38,40 +34,43 @@ class DepartmentList extends Component {
 
         }
     }
-    async loadDepartmentList() {
+    async loadPositionList() {
 
-        let p = getAllIndexes("departments");
+        let p = getAllIndexes("positions");
 
         if (!p) {
             return;
         }
-        try {
-            var data = await p;
 
-            const departments = this.state.departments.slice();
+            var data = await p;
             this.setState({
-                departments: departments.concat(data),
+                positions: data
+            })
+/*
+            const positions = this.state.positions.slice();
+            this.setState({
+                positions: positions.concat(data),
                 isLoading: false
             });
         } catch (err) {
             this.setState({
                 isLoading: false
             });
-        }
+        }*/
     }
 
     componentDidMount() {
-        this.loadDepartmentList();
+        this.loadPositionList();
     }
 
     /*    componentDidUpdate(nextProps) {
             if(this.props.isAuthenticated !== nextProps.isAuthenticated) {
                 // Reset State
                 this.setState({
-                    departments: [],
+                    positions: [],
                     isLoading: false
                 });
-                this.loadDepartmentList();
+                this.loadPositionList();
            }
         }*/
 
@@ -87,17 +86,18 @@ class DepartmentList extends Component {
             key: 'action',
             className:'table-header',
             render: (text, record) => (
-                <button onClick={this.handleDelete(record.id)}>حذف</button>
+                <button onClick={() => this.handleDelete(record.id)}>حذف</button>
             ),
         }];
+
         return (
-            <div className="departments-container">
-                <Table size="small" columns={columns} dataSource={ this.state.departments}  rowKey="id"/>
+            <div className="positions-container">
+                <Table size="small" columns={columns} dataSource={ this.state.positions} rowKey="id" />
 
                 {
-                    !this.state.isLoading && this.state.departments.length === 0 ? (
-                        <div className="no-departments-found">
-                            <span>No Departments Found.</span>
+                    !this.state.isLoading && this.state.positions.length === 0 ? (
+                        <div className="no-positions-found">
+                            <span>No Positions Found.</span>
                         </div>
                     ) : null
                 }
@@ -110,4 +110,4 @@ class DepartmentList extends Component {
     }
 }
 
-export default withRouter(DepartmentList);
+export default withRouter(MaterialList);

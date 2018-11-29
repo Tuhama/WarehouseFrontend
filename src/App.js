@@ -9,28 +9,28 @@ import NewPosition from './components/indexes/position/NewPosition';
 import NewDepartment from './components/indexes/department/NewDepartment';
 import NewEmployee from './components/employee/NewEmployee';
 
-import {LocaleProvider, Layout, Row, Col} from 'antd';
+import {LocaleProvider, Layout} from 'antd';
 import ar from 'antd/lib/locale-provider/ar_EG';
 
 
-//const { Content } = Layout;
+
 const { Header, Content, Footer, Sider } = Layout;
 
 class App extends Component {
     render() {
         return (
             <LocaleProvider locale={ar}>
-                <Switch>
+                <Switch >
 
-                    <Layout className="container" style={{direction: 'rtl', minHeight: '100vh'}}>
+                    <Layout style={{direction: 'rtl', minHeight: '100vh'}}>
                         <Header>Header</Header>
                         <Layout>
                             <Sider>
                                 <SideMenu/>
                             </Sider>
                             <Content>
-                                <div className="app-content">
-                                    <Route exact path="/" render={(props) => <Redirect to='/position'/>}></Route>
+                                <div>
+                                    <Route exact path="/" render={() => <Redirect to='/position'/>}/>
                                     <Route exact path="/position" component={NewPosition}/>
                                     <Route exact path="/department" component={NewDepartment}/>
 

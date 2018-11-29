@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {getAllIndexes} from '../../../util/APIUtils';
+import {getAllIndexes, deleteIndex, deleteEmployee} from '../../../util/APIUtils';
 
 import { Table, Divider, Tag } from 'antd';
 
@@ -7,22 +7,7 @@ import {withRouter} from 'react-router-dom';
 import './PositionList.css';
 
 
-const columns = [{
-    title: <p  className="table-header">الاسم</p>,
-    dataIndex: 'name',
-    key: 'name',
-    className:'table-header',
-    render: text => <a href="javascript:;">{text}</a>,
-}, {
-    title: <p  className="table-header">*</p>,
-    key: 'action',
-    className:'table-header',
-    render: (text, record) => (
-        <span>
-      <a  href="javascript:;">حذف</a>
-    </span>
-    ),
-}];
+
 
 
 class PositionList extends Component {
@@ -33,11 +18,11 @@ class PositionList extends Component {
             isLoading: false
         };
         this.loadPositionList = this.loadPositionList.bind(this);
+        this.handleDelete = this.handleDelete.bind(this);
     }
+    async handleDelete(id) {
 
-    async loadPositionList() {
-
-        let p = getAllIndexes("positions");
+        let p = deleteIndex("positions",id);
 
         if (!p) {
             return;
@@ -45,6 +30,23 @@ class PositionList extends Component {
         try {
             var data = await p;
 
+        } catch (err) {
+
+        }
+    }
+    async loadPositionList() {
+
+        let p = getAllIndexes("positions");
+
+        if (!p) {
+            return;
+        }
+
+            var data = await p;
+            this.setState({
+                positions: data
+            })
+/*
             const positions = this.state.positions.slice();
             this.setState({
                 positions: positions.concat(data),
@@ -54,7 +56,7 @@ class PositionList extends Component {
             this.setState({
                 isLoading: false
             });
-        }
+        }*/
     }
 
     componentDidMount() {
@@ -73,9 +75,24 @@ class PositionList extends Component {
         }*/
 
     render() {
+        const columns = [{
+            title: <p  className="table-header">الاسم</p>,
+            dataIndex: 'name',
+            key: 'name',
+            className:'table-header',
+            render: text => <a href="javascript:;">{text}</a>,
+        }, {
+            title: <p  className="table-header">*</p>,
+            key: 'action',
+            className:'table-header',
+            render: (text, record) => (
+                <button onClick={() => this.handleDelete(record.id)}>حذف</button>
+            ),
+        }];
+
         return (
             <div className="positions-container">
-                <Table size="small" columns={columns} dataSource={ this.state.positions} />
+                <Table size="small" columns={columns} dataSource={ this.state.positions} rowKey="id" />
 
                 {
                     !this.state.isLoading && this.state.positions.length === 0 ? (

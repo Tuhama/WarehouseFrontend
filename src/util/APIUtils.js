@@ -49,9 +49,10 @@ export function createIndex(indexType,indexData) {
         body: JSON.stringify(indexData)
     });
 }
-export function deleteIndex(indexType,indexData) {
+export function deleteIndex(indexType,indexId) {
+
     return request({
-        url: API_BASE_URL + "/" + indexType + "/" + indexData.Id,
+        url: API_BASE_URL + "/" + indexType + "/" + indexId,
         method: 'DELETE',
     });
 
@@ -66,14 +67,14 @@ export function getAllEmployees() {
     });
 }
 
-export function deleteEmployee(employeeData) {
+export function deleteEmployee(employeeId) {
     return request({
-        url: API_BASE_URL + "/employees/" + employeeData.Id,
+        url: API_BASE_URL + "/employees/" + employeeId,
         method: 'DELETE',
     });
 
 }
-export function createEmployee(employeeData) {
+export function createEmployee(employeeData){
     return request({
         url: API_BASE_URL + "/employees",
         method: 'POST',
