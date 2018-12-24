@@ -1,28 +1,26 @@
 import React, {Component} from 'react';
-import {getAllIndexes, deleteIndex, deleteEmployee} from '../../../util/APIUtils';
 
-import { Table, Divider, Tag } from 'antd';
+import './IndexList.css';
+import {getAllIndexes, deleteIndex} from '../../../util/APIUtils';
 
-import {withRouter} from 'react-router-dom';
-import './PositionList.css';
-
+import { Table } from 'antd';
 
 
+export default class IndexList extends Component {
 
-
-class PositionList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            positions: [],
+            indexs: [],
             isLoading: false
         };
-        this.loadPositionList = this.loadPositionList.bind(this);
+        this.loadIndexList = this.loadIndexList.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
     }
+
     async handleDelete(id) {
 
-        let p = deleteIndex("positions",id);
+        let p = deleteIndex( this.props.indexType, id);
 
         if (!p) {
             return;
@@ -34,9 +32,9 @@ class PositionList extends Component {
 
         }
     }
-    async loadPositionList() {
+    async loadIndexList() {
 
-        let p = getAllIndexes("positions");
+        let p = getAllIndexes( this.props.indexType );
 
         if (!p) {
             return;
@@ -44,12 +42,12 @@ class PositionList extends Component {
 
             var data = await p;
             this.setState({
-                positions: data
+                indexs: data
             })
 /*
-            const positions = this.state.positions.slice();
+            const indexs = this.state.indexs.slice();
             this.setState({
-                positions: positions.concat(data),
+                indexs: indexs.concat(data),
                 isLoading: false
             });
         } catch (err) {
@@ -60,17 +58,17 @@ class PositionList extends Component {
     }
 
     componentDidMount() {
-        this.loadPositionList();
+        this.loadIndexList();
     }
 
     /*    componentDidUpdate(nextProps) {
             if(this.props.isAuthenticated !== nextProps.isAuthenticated) {
                 // Reset State
                 this.setState({
-                    positions: [],
+                    indexs: [],
                     isLoading: false
                 });
-                this.loadPositionList();
+                this.loadIndexList();
            }
         }*/
 
@@ -91,13 +89,13 @@ class PositionList extends Component {
         }];
 
         return (
-            <div className="positions-container">
-                <Table size="small" columns={columns} dataSource={ this.state.positions} rowKey="id" />
+            <div className="indexs-container">
+                <Table size="small" columns={columns} dataSource={ this.state.indexs} rowKey="id" />
 
                 {
-                    !this.state.isLoading && this.state.positions.length === 0 ? (
-                        <div className="no-positions-found">
-                            <span>No Positions Found.</span>
+                    !this.state.isLoading && this.state.indexs.length === 0 ? (
+                        <div className="no-indexs-found">
+                            <span>لا يوجد بيانات</span>
                         </div>
                     ) : null
                 }
@@ -110,4 +108,3 @@ class PositionList extends Component {
     }
 }
 
-export default withRouter(PositionList);

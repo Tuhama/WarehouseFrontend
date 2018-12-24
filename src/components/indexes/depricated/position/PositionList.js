@@ -1,25 +1,28 @@
 import React, {Component} from 'react';
-import {getAllIndexes, deleteIndex} from '../../../util/APIUtils';
+import {getAllIndexes, deleteIndex, deleteEmployee} from '../../../../util/APIUtils';
 
 import { Table, Divider, Tag } from 'antd';
 
 import {withRouter} from 'react-router-dom';
-import './MaterialList.css';
+import './PositionList.css';
 
 
-class MaterialList extends Component {
+
+
+
+class PositionList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            materials: [],
+            positions: [],
             isLoading: false
         };
-        this.loadMaterialList = this.loadMaterialList.bind(this);
+        this.loadPositionList = this.loadPositionList.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
     }
     async handleDelete(id) {
 
-        let p = deleteIndex("materials",id);
+        let p = deleteIndex("positions",id);
 
         if (!p) {
             return;
@@ -31,9 +34,9 @@ class MaterialList extends Component {
 
         }
     }
-    async loadMaterialList() {
+    async loadPositionList() {
 
-        let p = getAllIndexes("materials");
+        let p = getAllIndexes("positions");
 
         if (!p) {
             return;
@@ -41,12 +44,12 @@ class MaterialList extends Component {
 
             var data = await p;
             this.setState({
-                materials: data
+                positions: data
             })
 /*
-            const materials = this.state.materials.slice();
+            const positions = this.state.positions.slice();
             this.setState({
-                materials: materials.concat(data),
+                positions: positions.concat(data),
                 isLoading: false
             });
         } catch (err) {
@@ -57,17 +60,17 @@ class MaterialList extends Component {
     }
 
     componentDidMount() {
-        this.loadMaterialList();
+        this.loadPositionList();
     }
 
     /*    componentDidUpdate(nextProps) {
             if(this.props.isAuthenticated !== nextProps.isAuthenticated) {
                 // Reset State
                 this.setState({
-                    materials: [],
+                    positions: [],
                     isLoading: false
                 });
-                this.loadMaterialList();
+                this.loadPositionList();
            }
         }*/
 
@@ -88,13 +91,13 @@ class MaterialList extends Component {
         }];
 
         return (
-            <div className="materials-container">
-                <Table size="small" columns={columns} dataSource={ this.state.materials} rowKey="id" />
+            <div className="positions-container">
+                <Table size="small" columns={columns} dataSource={ this.state.positions} rowKey="id" />
 
                 {
-                    !this.state.isLoading && this.state.materials.length === 0 ? (
-                        <div className="no-materials-found">
-                            <span>لا يوجد أصناف رئيسية</span>
+                    !this.state.isLoading && this.state.positions.length === 0 ? (
+                        <div className="no-positions-found">
+                            <span>No Positions Found.</span>
                         </div>
                     ) : null
                 }
@@ -107,4 +110,4 @@ class MaterialList extends Component {
     }
 }
 
-export default withRouter(MaterialList);
+export default withRouter(PositionList);

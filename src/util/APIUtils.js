@@ -13,7 +13,7 @@ const request = (options) => {
     options = Object.assign({}, defaults, options);
 
     return fetch(options.url, options).then(response => response.json())
-        .then(json => {console.log(json);return json;});
+        .then(json => {console.log("req: "+json);return json;});
 
 
 
@@ -35,6 +35,30 @@ const request = (options) => {
             }
         );*/
 };
+const request2 = (options) => {
+    const headers = new Headers({
+        'Content-Type': 'application/json',
+    })
+
+    const defaults = {headers: headers};
+    options = Object.assign({}, defaults, options);
+
+    return fetch(options.url, options)
+        .then(response =>
+            response.json().then(json => {
+                if(!response.ok) {
+                    return Promise.reject(json);
+                }
+                return json;
+            })
+        );
+};
+export function getAllIndexes2(indexType) {
+    return request2({
+        url: API_BASE_URL + "/"+indexType,
+        method: 'GET'
+    });
+}
 
 export function getAllIndexes(indexType) {
        return request({
@@ -79,6 +103,31 @@ export function createEmployee(employeeData){
         url: API_BASE_URL + "/employees",
         method: 'POST',
         body: JSON.stringify(employeeData)
+    });
+}
+
+/////////////////////MatReq///////////////////////////
+
+export function getAllMatReqs() {
+    return request({
+        url: API_BASE_URL + "/matDelReqs",
+        method: 'GET'
+    });
+}
+
+export function deleteMatReq(reqId) {
+    return request({
+        url: API_BASE_URL + "/matDelReqs/" + reqId,
+        method: 'DELETE',
+    });
+
+}
+export function createMatReq(reqData){
+    console.log(reqData);
+    return request({
+        url: API_BASE_URL + "/matDelReqs",
+        method: 'POST',
+        body: JSON.stringify(reqData)
     });
 }
 

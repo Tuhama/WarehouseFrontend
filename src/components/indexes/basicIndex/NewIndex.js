@@ -3,13 +3,13 @@ import React, { Component } from 'react';
 import { createIndex } from '../../../util/APIUtils';
 
 //import { MAX_CHOICES, POLL_QUESTION_MAX_LENGTH, POLL_CHOICE_MAX_LENGTH } from '../constants';
-import './NewPosition.css';
+import './NewIndex.css';
 import { Form, Input, Button, Icon,  Col, notification } from 'antd';
-import PositionList from './PositionList';
+import IndexList from './IndexList';
 const FormItem = Form.Item;
 const  FormText  = Input;
 
-class NewPosition extends Component {
+class NewIndex extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -18,7 +18,7 @@ class NewPosition extends Component {
             }
         };
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleNameChange = this.handleNameChange.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
         this.isFormInvalid = this.isFormInvalid.bind(this);
     }
 
@@ -27,11 +27,11 @@ class NewPosition extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        const positionData = {
+        const indexData = {
             name: this.state.name.text,
         };
 
-        createIndex("positions",positionData)
+        createIndex(this.props.indexType,indexData)
             .then(response => {
                 this.props.history.push("/");
             })/*.catch(error => {
@@ -65,7 +65,7 @@ class NewPosition extends Component {
         }
     }
 
-    handleNameChange(event) {
+    handleInputChange(event) {
         const value = event.target.value;
         this.setState({
             name: {
@@ -87,10 +87,10 @@ class NewPosition extends Component {
         return (
 
             <div className="new-index-container">
-                <PositionList />
-                <h1 className="page-title">موقع وظيفي جديد</h1>
+                <IndexList indexType={this.props.indexType}/>
+                <h1 className="page-title">إضافة جديد:</h1>
                 <div className="new-index-content">
-                    <Form onSubmit={this.handleSubmit} className="create-position-form">
+                    <Form onSubmit={this.handleSubmit} className="create-index-form">
                                              <FormItem validateStatus={this.state.name.validateStatus}
                                   help={this.state.name.errorMsg} className="index-form-row">
                      <FormText
@@ -99,7 +99,7 @@ class NewPosition extends Component {
                             autosize={{ minRows: 3, maxRows: 6 }}
                             name = "name"
                             value = {this.state.name.text}
-                            onChange = {this.handleNameChange}
+                            onChange = {this.handleInputChange}
                      />
                         </FormItem>
 
@@ -116,4 +116,4 @@ class NewPosition extends Component {
         );
     }
 }
-export default NewPosition;
+export default NewIndex;

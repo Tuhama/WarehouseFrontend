@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 
 import EmployeeList from './EmployeeList';
-import {createEmployee, getAllIndexes} from '../../util/APIUtils';
+import {createEmployee, getAllIndexes} from '../../../util/APIUtils';
 
 
-import {Form, Input, Button, Select} from 'antd';
+import {Form, Input, Button, Select, InputNumber } from 'antd';
 
 const FormItem = Form.Item;
 const FormText = Input;
@@ -27,7 +27,7 @@ class NewEmployee extends Component {
                 text: ''
             },
             natId: {
-                text: ''
+                text: 0
             },
             departmentId:
                 0
@@ -41,17 +41,29 @@ class NewEmployee extends Component {
 
         };
         this.handleSubmit = this.handleSubmit.bind(this);
+/*
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleFnameChange = this.handleFnameChange.bind(this);
         this.handleLnameChange = this.handleLnameChange.bind(this);
         this.handleMnameChange = this.handleMnameChange.bind(this);
         this.handleNatIdChange = this.handleNatIdChange.bind(this);
         this.handleDepartmentChange = this.handleDepartmentChange.bind(this);
-        this.handlePositionChange = this.handlePositionChange.bind(this);
+        this.handlePositionChange = this.handlePositionChange.bind(this);*/
+
+        this.handleInputChange = this.handleInputChange.bind(this);
+
         this.isFormInvalid = this.isFormInvalid.bind(this);
     }
 
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
 
+        this.setState({
+            [name]: {text: value}
+        });
+    }
     async loadPositions() {
 
         let p = getAllIndexes("positions");
@@ -149,7 +161,7 @@ class NewEmployee extends Component {
         }
     }
 
-    handleNameChange(event) {
+    /*handleNameChange(event) {
         const value = event.target.value;
         this.setState({
             name: {
@@ -186,6 +198,7 @@ class NewEmployee extends Component {
         });
     }
     handleNatIdChange(event) {
+        console.log(event);
         const value = event.target.value;
         this.setState({
             natId: {
@@ -203,7 +216,7 @@ class NewEmployee extends Component {
         this.setState({
             departmentId: value
         });
-    }
+    }*/
     isFormInvalid() {
         if (this.state.name.validateStatus !== 'success') {
             return true;
@@ -264,7 +277,7 @@ class NewEmployee extends Component {
                             />
                         </FormItem>
                         <FormItem validateStatus={this.state.natId.validateStatus}
-                                  help={this.state.natId.errorMsg} className="index-form-row">
+                                  help={this.state.natId.errorMsg} >
                             <FormText
                                 placeholder="الرقم الوطني هنا"
                                 style={{fontSize: '16px'}}
@@ -280,7 +293,7 @@ class NewEmployee extends Component {
                             <span style={{marginRight: '18px'}}>
                                 &nbsp;القسم:
                                     <Select
-                                        name="days"
+                                        name="departmentId"
                                         defaultValue="1"
                                         onChange={this.handleDepartmentChange}
                                         value={this.state.departmentId}
@@ -301,7 +314,7 @@ class NewEmployee extends Component {
 
                                 &nbsp;الموقع الوظيفي:
                                     <Select
-                                        name="days"
+                                        name="positionId"
                                         defaultValue="1"
                                         onChange={this.handlePositionChange}
                                         value={this.state.positionId}

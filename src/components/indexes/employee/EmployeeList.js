@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 
-import {getAllEmployees, deleteEmployee} from '../../util/APIUtils';
+import {getAllEmployees, deleteEmployee} from '../../../util/APIUtils';
 
 
 import { Table, Divider, Tag } from 'antd';
-import {withRouter} from 'react-router-dom';
+import withRouter from 'react-router-dom';
 
 
 
@@ -82,42 +82,42 @@ class EmployeeList extends Component {
             {
                 title: <p  className="table-header">الاب</p>,
                 dataIndex: 'fname',
-                key: 'name',
+                key: 'fname',
                 className:'table-header',
                 render: text => <a href="javascript:;">{text}</a>,
             },
             {
                 title: <p  className="table-header">الكنية</p>,
                 dataIndex: 'lname',
-                key: 'name',
+                key: 'lname',
                 className:'table-header',
                 render: text => <a href="javascript:;">{text}</a>,
             },
             {
                 title: <p  className="table-header">الأم</p>,
                 dataIndex: 'mname',
-                key: 'name',
+                key: 'mname',
                 className:'table-header',
                 render: text => <a href="javascript:;">{text}</a>,
             },
             {
                 title: <p  className="table-header">الرقم الوطني</p>,
                 dataIndex: 'natId',
-                key: 'name',
+                key: 'natId',
                 className:'table-header',
                 render: text => <a href="javascript:;">{text}</a>,
             },
             {
                 title: <p  className="table-header">القسم</p>,
                 dataIndex: 'department.name',
-                key: 'name',
+                key: 'dep',
                 className:'table-header',
                 render: text => <a href="javascript:;">{text}</a>,
             },
             {
                 title: <p  className="table-header">المسمى الوظيفي</p>,
                 dataIndex: 'position.name',
-                key: 'name',
+                key: 'pos',
                 className:'table-header',
                 render: text => <a href="javascript:;">{text}</a>,
             },

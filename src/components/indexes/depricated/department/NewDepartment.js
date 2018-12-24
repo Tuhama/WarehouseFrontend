@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { createIndex} from '../../../util/APIUtils';
+import { createIndex} from '../../../../util/APIUtils';
 import DepartmentList from './DepartmentList';
 import './NewDepartment.css';
 

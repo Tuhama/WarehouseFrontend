@@ -5,9 +5,14 @@ import {Route, withRouter, Switch, Redirect} from 'react-router-dom';
 
 import SideMenu from './components/ui/SideMenu';
 
-import NewPosition from './components/indexes/position/NewPosition';
-import NewDepartment from './components/indexes/department/NewDepartment';
-import NewEmployee from './components/employee/NewEmployee';
+//import NewPosition from './components/indexes/position/NewPosition';
+//import NewDepartment from './components/indexes/department/NewDepartment';
+//import NewMaterial from './components/indexes/material/NewMaterial';
+import NewEmployee from './components/indexes/employee/NewEmployee';
+import NewSubMaterial from './components/indexes/subMaterial/NewSubMaterial';
+import NewMaterial from './components/indexes/material/NewMaterial';
+import NewMatReq from './components/matdelreq/NewMatReq';
+import NewIndex from './components/indexes/basicIndex/NewIndex';
 
 import {LocaleProvider, Layout} from 'antd';
 import ar from 'antd/lib/locale-provider/ar_EG';
@@ -20,7 +25,7 @@ class App extends Component {
     render() {
         return (
             <LocaleProvider locale={ar}>
-                <Switch >
+
 
                     <Layout style={{direction: 'rtl', minHeight: '100vh'}}>
                         <Header>Header</Header>
@@ -29,13 +34,21 @@ class App extends Component {
                                 <SideMenu/>
                             </Sider>
                             <Content>
+                                <Switch >
                                 <div>
-                                    <Route exact path="/" render={() => <Redirect to='/position'/>}/>
-                                    <Route exact path="/position" component={NewPosition}/>
-                                    <Route exact path="/department" component={NewDepartment}/>
+                                    <Route exact path="/" render={() => <Redirect to='/matdelreq'/>}/>
 
+                                    <Route exact path="/position" component={() => <NewIndex indexType='positions'/>}/>
+                                    <Route exact path="/department" component={() => <NewIndex indexType='departments'/>}/>
+                                    <Route exact path="/contact" component={() => <NewIndex indexType='contacts'/>}/>
+                                    <Route exact path="/material" component={NewMaterial}/>
+
+
+                                    <Route exact path="/submaterial" component={NewSubMaterial}/>
                                     <Route exact path="/employee" component={NewEmployee}/>
 
+
+                                    <Route exact path="/matdelreq" component={NewMatReq}/>
 
                                     {/*    <Route exact path="/"
                                render={(props) => <PollList isAuthenticated={this.state.isAuthenticated}
@@ -51,6 +64,7 @@ class App extends Component {
                         <Route component={NotFound}></Route>*/}
 
                                 </div>
+                                </Switch>
                             </Content>
 
                         </Layout>
@@ -59,7 +73,7 @@ class App extends Component {
                         </Footer>
                     </Layout>
 
-                </Switch>
+
             </LocaleProvider>
         );
     }

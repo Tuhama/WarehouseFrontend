@@ -1,13 +1,15 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
-import { createIndex } from '../../../util/APIUtils';
+import {createIndex} from '../../../util/APIUtils';
 
 //import { MAX_CHOICES, POLL_QUESTION_MAX_LENGTH, POLL_CHOICE_MAX_LENGTH } from '../constants';
 import './NewMaterial.css';
-import { Form, Input, Button, Icon,  Col, notification } from 'antd';
+import {Form, Input, Button, Icon, Col, notification} from 'antd';
 import MaterialList from './MaterialList';
+
+
 const FormItem = Form.Item;
-const  FormText  = Input;
+const FormText = Input;
 
 class NewMaterial extends Component {
     constructor(props) {
@@ -15,23 +17,48 @@ class NewMaterial extends Component {
         this.state = {
             name: {
                 text: ''
-            }
+            },
+            id: {
+                text: ''
+            },
+            unit: {
+                text: ''
+            },
+            type: {
+                text: ''
+            },
+            note: {
+                text: ''
+            },
+
         };
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleNameChange = this.handleNameChange.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
         this.isFormInvalid = this.isFormInvalid.bind(this);
     }
 
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
 
+        this.setState({
+            [name]: {text: value}
+        });
+    }
 
 
     handleSubmit(event) {
         event.preventDefault();
         const materialData = {
             name: this.state.name.text,
+            id: this.state.id.text,
+            type: this.state.type.text,
+            unit: this.state.unit.text,
+            note: this.state.note.text,
         };
 
-        createIndex("materials",materialData)
+        createIndex("materials", materialData)
             .then(response => {
                 this.props.history.push("/");
             })/*.catch(error => {
@@ -47,7 +74,7 @@ class NewMaterial extends Component {
     }
 
     validateName = (nameText) => {
-        if(nameText.length === 0) {
+        if (nameText.length === 0) {
             return {
                 validateStatus: 'error',
                 errorMsg: 'الرجاء ادخال اسم'
@@ -57,7 +84,7 @@ class NewMaterial extends Component {
                 validateStatus: 'error',
                 errorMsg: `Question is too long (Maximum ${POLL_QUESTION_MAX_LENGTH} characters allowed)`
             }
-        } */else {
+        } */ else {
             return {
                 validateStatus: 'success',
                 errorMsg: null
@@ -70,15 +97,15 @@ class NewMaterial extends Component {
         this.setState({
             name: {
                 text: value,
-                ...this.validateName(value)
+               // ...this.validateName(value)
             }
         });
     }
 
 
     isFormInvalid() {
-        if(this.state.name.validateStatus !== 'success') {
-            return true;
+       /* if (this.state.name.validateStatus !== 'success') */{
+            return false;
         }
     }
 
@@ -87,22 +114,67 @@ class NewMaterial extends Component {
         return (
 
             <div className="new-index-container">
-                <MaterialList />
-                <h1 className="page-title">موقع وظيفي جديد</h1>
+                <MaterialList/>
+                <h1 className="page-title">صنف رئيسي جديد</h1>
                 <div className="new-index-content">
                     <Form onSubmit={this.handleSubmit} className="create-material-form">
-                                             <FormItem validateStatus={this.state.name.validateStatus}
-                                  help={this.state.name.errorMsg} className="index-form-row">
-                     <FormText
-                            placeholder="ادخل الاسم هنا"
-                            style = {{ fontSize: '16px' }}
-                            autosize={{ minRows: 3, maxRows: 6 }}
-                            name = "name"
-                            value = {this.state.name.text}
-                            onChange = {this.handleNameChange}
-                     />
+                        <FormItem
+                          /*  validateStatus={this.state.name.validateStatus}
+                                  help={this.state.name.errorMsg} */
+                                  className="index-form-row">
+                            <FormText
+                                placeholder="اسم الصنف"
+                                style={{fontSize: '16px'}}
+                                autosize={{minRows: 3, maxRows: 6}}
+                                name="name"
+                                value={this.state.name.text}
+                                onChange={this.handleInputChange}
+                            />
                         </FormItem>
-
+                        <FormItem  className="index-form-row">
+                            <FormText
+                                placeholder="رمز المادة"
+                                style={{fontSize: '16px'}}validateStatus={this.state.id.validateStatus}
+                                help={this.state.id.errorMsg}
+                                autosize={{minRows: 3, maxRows: 6}}
+                                name="id"
+                                value={this.state.id.text}
+                                onChange={this.handleInputChange}
+                            />
+                        </FormItem>
+                        <FormItem validateStatus={this.state.unit.validateStatus}
+                                  help={this.state.unit.errorMsg} className="index-form-row">
+                            <FormText
+                                placeholder="واحدة القياس"
+                                style={{fontSize: '16px'}}
+                                autosize={{minRows: 3, maxRows: 6}}
+                                name="unit"
+                                value={this.state.unit.text}
+                                onChange={this.handleInputChange}
+                            />
+                        </FormItem>
+                        <FormItem validateStatus={this.state.type.validateStatus}
+                                                                     help={this.state.type.errorMsg} className="index-form-row">
+                        <FormText
+                            placeholder="النوع"
+                            style={{fontSize: '16px'}}
+                            autosize={{minRows: 3, maxRows: 6}}
+                            name="type"
+                            value={this.state.type.text}
+                            onChange={this.handleInputChange}
+                        />
+                    </FormItem>
+                        <FormItem validateStatus={this.state.note.validateStatus}
+                                                                 help={this.state.note.errorMsg} className="index-form-row">
+                        <FormText
+                            placeholder="ملاحظات"
+                            style={{fontSize: '16px'}}
+                            autosize={{minRows: 3, maxRows: 6}}
+                            name="note"
+                            value={this.state.note.text}
+                            onChange={this.handleInputChange}
+                        />
+                    </FormItem>
                         <FormItem className="index-form-row">
                             <Button type="primary"
                                     htmlType="submit"
@@ -116,4 +188,5 @@ class NewMaterial extends Component {
         );
     }
 }
+
 export default NewMaterial;
