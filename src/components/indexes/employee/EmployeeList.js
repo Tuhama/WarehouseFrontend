@@ -150,4 +150,4 @@ class EmployeeList extends Component {
     }
 }
 
-export default withRouter(EmployeeList);
+export default EmployeeList;

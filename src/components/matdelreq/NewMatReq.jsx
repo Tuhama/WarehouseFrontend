@@ -54,13 +54,13 @@ class NewMatReq extends Component {
     handleInputChange(event) {
         console.log(event);
         const target = event.target;
-        if(target)
-        const value = target.type === 'checkbox' ? target.checked : (target.type === 'date' ?  moment(target.value, dateFormat) : target.value);
-        const name = target.name;
+        if(target) {
+            const value = target.type === 'checkbox' ? target.checked : (target.type === 'date' ? moment(target.value, dateFormat) : target.value);
+            const name = target.name;
 
         this.setState({
             [name]: {text: value}
-        });
+        });}
     }
     async loadEmployeeList() {
 

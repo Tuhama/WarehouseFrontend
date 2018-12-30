@@ -240,7 +240,7 @@ class NewEmployee extends Component {
                                 autosize={{minRows: 3, maxRows: 6}}
                                 name="name"
                                 value={this.state.name.text}
-                                onChange={this.handleNameChange}
+                                onChange={this.handleInputChange}
                             />
                         </FormItem>
                         <FormItem validateStatus={this.state.fname.validateStatus}
@@ -251,7 +251,7 @@ class NewEmployee extends Component {
                                 autosize={{minRows: 3, maxRows: 6}}
                                 name="fname"
                                 value={this.state.fname.text}
-                                onChange={this.handleFnameChange}
+                                onChange={this.handleInputChange}
                             />
                         </FormItem>
                         <FormItem validateStatus={this.state.lname.validateStatus}
@@ -262,7 +262,7 @@ class NewEmployee extends Component {
                                 autosize={{minRows: 3, maxRows: 6}}
                                 name="lname"
                                 value={this.state.lname.text}
-                                onChange={this.handleLnameChange}
+                                onChange={this.handleInputChange}
                             />
                         </FormItem>
                         <FormItem validateStatus={this.state.mname.validateStatus}
@@ -273,7 +273,7 @@ class NewEmployee extends Component {
                                 autosize={{minRows: 3, maxRows: 6}}
                                 name="mname"
                                 value={this.state.mname.text}
-                                onChange={this.handleMnameChange}
+                                onChange={this.handleInputChange}
                             />
                         </FormItem>
                         <FormItem validateStatus={this.state.natId.validateStatus}
@@ -284,7 +284,7 @@ class NewEmployee extends Component {
                                 autosize={{minRows: 3, maxRows: 6}}
                                 name="natId"
                                 value={this.state.natId.text}
-                                onChange={this.handleNatIdChange}
+                                onChange={this.handleInputChange}
                             />
                         </FormItem>
                         <FormItem validateStatus={this.state.name.department}
@@ -295,7 +295,7 @@ class NewEmployee extends Component {
                                     <Select
                                         name="departmentId"
                                         defaultValue="1"
-                                        onChange={this.handleDepartmentChange}
+                                        onChange={this.handleInputChange}
                                         value={this.state.departmentId}
                                         >
                                         {
@@ -316,7 +316,7 @@ class NewEmployee extends Component {
                                     <Select
                                         name="positionId"
                                         defaultValue="1"
-                                        onChange={this.handlePositionChange}
+                                        onChange={this.handleInputChange}
                                         value={this.state.positionId}
                                         >
                                         {

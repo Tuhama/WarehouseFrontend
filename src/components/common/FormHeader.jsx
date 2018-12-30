@@ -33,7 +33,7 @@ class FormHeader extends Component {
     }
 
     handleInputChange(event) {
-        this.props.onInputChange(value);
+        this.props.onInputChange(event);
     }
 
 /*    handleFolderNumberChange(event) {
@@ -72,7 +72,7 @@ class FormHeader extends Component {
                         autosize={{minRows: 3, maxRows: 6}}
                         name="folderNumber"
                         value={this.props.folderNum}
-                        onChange={this.handleFolderNumberChange}
+                        onChange={this.handleInputChange}
                     />
                 </FormItem>
                 {/*validateStatus={this.state.serialNumber.validateStatus}
@@ -85,14 +85,14 @@ class FormHeader extends Component {
 
                         name="serialNumber"
                         value={this.props.serialNum}
-                        onChange={this.handleSerialNumberChange}
+                        onChange={this.handleInputChange}
                     />
                 </FormItem>
                 {/*validateStatus={this.state.date.validateStatus}
                           help={this.state.date.errorMsg}*/}
                 <FormItem  {...formItemLayout} label="التاريخ:"  >
                 <DatePicker name="date"  style={{fontSize: '10px'}}
-                            value={this.props.date}   format={dateFormat}  onChange={this.handleDateChange} />
+                            value={this.props.date}   format={dateFormat}  onChange={this.handleInputChange} />
                 </FormItem>
             </div>
         );

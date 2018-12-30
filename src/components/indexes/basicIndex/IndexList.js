@@ -78,7 +78,7 @@ export default class IndexList extends Component {
             dataIndex: 'name',
             key: 'name',
             className:'table-header',
-            render: text => <a href="javascript:;">{text}</a>,
+            render: text => <a >{text}</a>,
         }, {
             title: <p  className="table-header">*</p>,
             key: 'action',

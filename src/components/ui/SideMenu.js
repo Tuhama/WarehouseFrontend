@@ -1,23 +1,25 @@
 import React, {Component} from 'react';
 
 
-import {
-    Link,
-    withRouter } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {Menu, Icon} from 'antd';
+//import { withRouter } from "react-router";
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 
 
 class SideMenu extends Component {
+
+
     render() {
         return (
 
             <Menu
-                onClick={this.handleClick}
-                style={{width: 256}}
-                defaultSelectedKeys={['1']}
+                //onClick={this.handleClick}
+                // style={{width: 256}}
+                //theme="dark"
+                defaultSelectedKeys={['7']}
                 defaultOpenKeys={['sub1']}
                 mode="inline"
             >
@@ -34,13 +36,7 @@ class SideMenu extends Component {
                             مذكرة تسليم
                         </Link>
                     </Menu.Item>
-                    <SubMenu key="sub3" title="Submenu">
-
-                        <Menu.Item key="9">Option 8</Menu.Item>
-                    </SubMenu>
-
                 </SubMenu>
-
 
                 <SubMenu key="sub2" title={<span>فهارس</span>}>
                     <Menu.Item key="1">
@@ -82,4 +78,4 @@ class SideMenu extends Component {
     }
 }
 
-export default withRouter(SideMenu);
+export default SideMenu;
