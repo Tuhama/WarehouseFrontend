@@ -32,7 +32,7 @@ class MaterialList extends Component {
         }
     }
     async loadMaterialList() {
-
+        console.log("load1");
         let p = getAllIndexes("materials");
 
         if (!p) {
@@ -43,6 +43,7 @@ class MaterialList extends Component {
             this.setState({
                 materials: data
             })
+        console.log(data);
 /*
             const materials = this.state.materials.slice();
             this.setState({

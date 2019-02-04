@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 
 import './App.css';
-import { BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
-//import { withRouter } from "react-router";
+import { withRouter,Route, Switch, Redirect} from 'react-router-dom';
 
 import SideMenu from './components/ui/SideMenu';
 
@@ -23,7 +22,7 @@ import ar from 'antd/lib/locale-provider/ar_EG';
 class App extends Component {
     render() {
         return (
-            <Router>
+
             <LocaleProvider locale={ar}>
 
 
@@ -40,17 +39,17 @@ class App extends Component {
 
                                         <Route exact path="/" render={() => <Redirect to='/matdelreq'/>}/>
 
-                                        <Route exact path="/position"
+                                        <Route exact path="/positions"
                                                component={() => <NewIndex indexType='positions'/>}/>
-                                        <Route exact path="/department"
+                                        <Route exact path="/departments"
                                                component={() => <NewIndex indexType='departments'/>}/>
-                                        <Route exact path="/contact"
+                                        <Route exact path="/contacts"
                                                component={() => <NewIndex indexType='contacts'/>}/>
-                                        <Route exact path="/material" component={NewMaterial}/>
+                                        <Route exact path="/materials" component={NewMaterial}/>
 
 
-                                        <Route exact path="/submaterial" component={NewSubMaterial}/>
-                                        <Route exact path="/employee" component={NewEmployee}/>
+                                        <Route exact path="/submaterials" component={NewSubMaterial}/>
+                                        <Route exact path="/employees" component={NewEmployee}/>
 
 
                                         <Route exact path="/matdelreq" component={NewMatReq}/>
@@ -76,18 +75,17 @@ class App extends Component {
                                 <SideMenu/>
                         </Col>
                     </Row>
-<Row style={{textAlign: 'center',height:'5vh'}}>
+                    <Row style={{textAlign: 'center',height:'5vh'}}>
 
                         ©2018 Created by Team
 
-</Row>
+                    </Row>
                 </div>
 
 
             </LocaleProvider>
-            </Router>
         );
     }
 }
 
-export default App;
+export default withRouter(App);

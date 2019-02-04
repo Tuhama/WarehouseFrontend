@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
 
+import { withRouter } from 'react-router-dom';
+
 import './IndexList.css';
 import {getAllIndexes, deleteIndex} from '../../../util/APIUtils';
 
 import { Table } from 'antd';
 
 
-export default class IndexList extends Component {
+class IndexList extends Component {
 
     constructor(props) {
         super(props);
@@ -20,9 +22,12 @@ export default class IndexList extends Component {
 
     async handleDelete(id) {
 
-        let p = deleteIndex( this.props.indexType, id);
+        deleteIndex( this.props.indexType, id).done(response => {
+            console.log(this.props.indexType)
+            this.props.history.push("/"+this.props.indexType);
+        });
 
-        if (!p) {
+/*       if (!p) {
             return;
         }
         try {
@@ -30,7 +35,7 @@ export default class IndexList extends Component {
 
         } catch (err) {
 
-        }
+        }*/
     }
     async loadIndexList() {
 
@@ -108,3 +113,4 @@ export default class IndexList extends Component {
     }
 }
 
+export default withRouter(IndexList);

@@ -1,18 +1,23 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
-    Table, Input, Button, Popconfirm, Form, Select
+    Table, Input, Button, Popconfirm, Form, Select,
 } from 'antd';
 import {getAllIndexes} from "../../util/APIUtils";
 
+
+
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
+//here
 const Option = Select.Option;
 
-const EditableRow = ({form, index, ...props}) => (
+const EditableRow = ({ form, index, ...props }) => (
     <EditableContext.Provider value={form}>
         <tr {...props} />
     </EditableContext.Provider>
 );
+
+const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
     state = {
@@ -33,7 +38,8 @@ class EditableCell extends React.Component {
 
     toggleEdit = () => {
         const editing = !this.state.editing;
-        this.setState({editing}, () => {
+        console.log("toggling");
+        this.setState({ editing }, () => {
             if (editing) {
                 this.input.focus();
             }
@@ -41,25 +47,27 @@ class EditableCell extends React.Component {
     }
 
     handleClickOutside = (e) => {
-        const {editing} = this.state;
+        const { editing } = this.state;
         if (editing && this.cell !== e.target && !this.cell.contains(e.target)) {
             this.save();
         }
     }
 
     save = () => {
-        const {record, handleSave} = this.props;
+        const { record, handleSave } = this.props;
+        console.log(" save:"+record );
         this.form.validateFields((error, values) => {
             if (error) {
                 return;
             }
             this.toggleEdit();
-            handleSave({...record, ...values});
+            handleSave({ ...record, ...values });
         });
     }
 
     render() {
-        const {editing} = this.state;
+        const { editing } = this.state;
+
         const {
             editable,
             dataIndex,
@@ -67,6 +75,7 @@ class EditableCell extends React.Component {
             record,
             index,
             handleSave,
+            //here
             isSelect,
             items,
             ...restProps
@@ -78,7 +87,33 @@ class EditableCell extends React.Component {
                         {(form) => {
                             this.form = form;
                             return (
-                                editing ? ( isSelect ? (
+                                //here
+                                editing ? (isSelect ? (
+                                        <FormItem style={{margin: 0}}>
+                                            {form.getFieldDecorator(dataIndex, {
+                                                rules: [{
+                                                    required: true,
+                                                    message: `${title} is required.`,
+                                                }],
+                                                //here
+                                                valuePropName: 'option',
+                                                initialValue: record[dataIndex],
+                                            })(
+                                                <Select
+                                                    placeholder='اختر المادة'
+                                                    ref={node => (this.input = node)}
+                                                    onPressEnter={this.save}
+                                                >
+                                                    {
+                                                        items.map(i =>
+                                                            <Option key={i.id}>{i.name}</Option>
+                                                        )
+                                                    }
+
+                                                </Select>
+                                            )}
+                                        </FormItem>
+                                    ) : (
                                         <FormItem style={{margin: 0}}>
                                             {form.getFieldDecorator(dataIndex, {
                                                 rules: [{
@@ -87,38 +122,15 @@ class EditableCell extends React.Component {
                                                 }],
                                                 initialValue: record[dataIndex],
                                             })(
-                                                <Select
+                                                <Input
                                                     ref={node => (this.input = node)}
-                                                    onPressEnter={this.save}
-                                                >
-                                                    {
-                                                       items.map(i =>
-                                                            <Option key={i.id}>{i.name}</Option>
-                                                        )
-                                                    }
-
-                                                </Select>
-
+                                                    onPressEnter={this.save}/>
                                             )}
-                                        </FormItem>
-                                    ):(
-                                    <FormItem style={{margin: 0}}>
-                                        {form.getFieldDecorator(dataIndex, {
-                                            rules: [{
-                                                required: true,
-                                                message: `${title} is required.`,
-                                            }],
-                                            initialValue: record[dataIndex],
-                                        })(
-                                            <Input
-                                                ref={node => (this.input = node)}
-                                                onPressEnter={this.save} />
-                                        )}
-                                    </FormItem>)
+                                        </FormItem>)
                                 ) : (
                                     <div
                                         className="editable-cell-value-wrap"
-                                        style={{paddingRight: 24}}
+                                        style={{ paddingRight: 24 }}
                                         onClick={this.toggleEdit}
                                     >
                                         {restProps.children}
@@ -133,90 +145,69 @@ class EditableCell extends React.Component {
     }
 }
 
-
-const EditableFormRow = Form.create()(EditableRow);
-
-class MatReqGrid extends Component {
+class EditableTable extends React.Component {
     constructor(props) {
         super(props);
+
+        //here
         this.columns = [
             {
-            title: 'المادة',
-            dataIndex: 'subMaterial',
-            width: '35%',
-            editable: true,
-            isSelect: true,
+                title: 'المادة',
+                dataIndex: 'subMaterial',
+                width: '35%',
+                editable: true,
+                isSelect: true,
 
-        }, {
-            title: 'الكمية',
-            dataIndex: 'amount',
-            width: '15%',
-            editable: true,
-        }, {
-            title: 'الملاحظات',
-            dataIndex: 'notes',
-            width: '35%',
-            editable: true,
-        }, {
-            title: '*',
+            }, {
+                title: 'الكمية',
+                dataIndex: 'amount',
+                width: '15%',
+                editable: true,
+            }, {
+                title: 'الملاحظات',
+                dataIndex: 'notes',
+                width: '35%',
+                editable: true,
+            },
+            {
+            title: 'operation',
             dataIndex: 'operation',
             render: (text, record) => (
                 this.state.dataSource.length >= 1
                     ? (
-                        <Popconfirm title="متأكد من الحذف؟" onConfirm={() => this.handleDelete(record.key)}>
-                            ToDo
+                        <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.key)}>
+                            <a href="javascript:;">Delete</a>
                         </Popconfirm>
                     ) : null
             ),
-            width: '15%',
-
         }];
+
+        //here
+        this.subMaterials= [];
 
         this.state = {
             dataSource: [{
                 key: '0',
-                subMaterial: 0,
-                amount: 0,
-                notes: '',
+                subMaterial:'18',
+                amount: '0',
+                notes: 'notes',
             }],
-            count: 1,
-            subMaterials:[]
+            count: 1
         };
     }
-    async loadSubMaterials() {
-
-        let p = getAllIndexes("subMaterials");
-
-        if (!p) {
-            return;
-        }
-        try {
-            var data = await p;
-
-            const subMaterials = this.state.subMaterials.slice();
-            this.setState({
-                subMaterials: subMaterials.concat(data),
-            });
-        } catch (err) {
-        }
-    }
-
-    componentDidMount() {
-        this.loadSubMaterials();
-    }
-
+/*this.subMaterials=[{}]*/
     handleDelete = (key) => {
         const dataSource = [...this.state.dataSource];
-        this.setState({dataSource: dataSource.filter(item => item.key !== key)});
+        this.setState({ dataSource: dataSource.filter(item => item.key !== key) });
     }
 
     handleAdd = () => {
-        const {count, dataSource} = this.state;
+        const { count, dataSource } = this.state;
         const newData = {
             key: count,
-            subMaterial: 0,
-            amount: 32,
-            notes: ``,
+            subMaterial: '18',
+            amount: '0',
+            notes: 'notes',
         };
         this.setState({
             dataSource: [...dataSource, newData],
@@ -225,6 +216,7 @@ class MatReqGrid extends Component {
     }
 
     handleSave = (row) => {
+        console.log("handle save:" + row);
         const newData = [...this.state.dataSource];
         const index = newData.findIndex(item => row.key === item.key);
         const item = newData[index];
@@ -232,11 +224,15 @@ class MatReqGrid extends Component {
             ...item,
             ...row,
         });
-        this.setState({dataSource: newData});
+        this.setState({ dataSource: newData });
+    }
+    //here
+    componentDidMount() {
+        this.loadSubMaterials();
     }
 
     render() {
-        const {dataSource} = this.state;
+        const { dataSource } = this.state;
         const components = {
             body: {
                 row: EditableFormRow,
@@ -255,15 +251,16 @@ class MatReqGrid extends Component {
                     dataIndex: col.dataIndex,
                     title: col.title,
                     handleSave: this.handleSave,
+                    //here
                     isSelect: col.isSelect,
-                    items: this.state.subMaterials
+                    items: this.subMaterials
                 }),
             };
         });
         return (
             <div>
-                <Button onClick={this.handleAdd} type="primary" style={{marginBottom: 16}}>
-                    +
+                <Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16 }}>
+                    Add a row
                 </Button>
                 <Table
                     components={components}
@@ -275,6 +272,22 @@ class MatReqGrid extends Component {
             </div>
         );
     }
+
+    async loadSubMaterials() {
+
+        let p = getAllIndexes("subMaterials");
+
+        if (!p) {
+            return;
+        }
+        try {
+            var data = await p;
+
+            const subMaterials = this.subMaterials.slice();
+            this.subMaterials= subMaterials.concat(data);
+        } catch (err) {
+        }
+    }
 }
 
-export default MatReqGrid;
+export default EditableTable;

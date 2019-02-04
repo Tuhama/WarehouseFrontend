@@ -40,32 +40,32 @@ class SideMenu extends Component {
 
                 <SubMenu key="sub2" title={<span>فهارس</span>}>
                     <Menu.Item key="1">
-                        <Link to="/employee">
+                        <Link to="/employees">
                             موظفين
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="2">
-                        <Link to="/position">
+                        <Link to="/positions">
                             مواقع وظيفية
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="3">
-                        <Link to="/department">
+                        <Link to="/departments">
                             أقسام
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="4">
-                        <Link to="/material">
+                        <Link to="/materials">
                             أصناف رئيسية
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="5">
-                        <Link to="/submaterial">
+                        <Link to="/submaterials">
                             المواد
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="6">
-                        <Link to="/contact">
+                        <Link to="/contacts">
                             الجهات الخارجية
                         </Link>
                     </Menu.Item>

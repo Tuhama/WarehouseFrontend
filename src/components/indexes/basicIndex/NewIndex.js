@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { withRouter } from 'react-router-dom';
+
 import { createIndex } from '../../../util/APIUtils';
 
 //import { MAX_CHOICES, POLL_QUESTION_MAX_LENGTH, POLL_CHOICE_MAX_LENGTH } from '../constants';
@@ -33,7 +35,7 @@ class NewIndex extends Component {
 
         createIndex(this.props.indexType,indexData)
             .then(response => {
-                this.props.history.push("/");
+                this.props.history.push("/"+this.props.indexType);
             })/*.catch(error => {
             if(error.status === 401) {
                 this.props.handleLogout('/login', 'error', 'You have been logged out. Please login create poll.');
@@ -116,4 +118,4 @@ class NewIndex extends Component {
         );
     }
 }
-export default NewIndex;
+export default withRouter(NewIndex);
