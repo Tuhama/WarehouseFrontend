@@ -8,10 +8,7 @@ import FormHeader from '../common/FormHeader'
 import {Form, Input, Button, Icon, Row, Select, Col, notification} from 'antd';
 import {createMatReq, getAllEmployees, getAllIndexes} from "../../util/APIUtils";
 import moment from "moment/moment";
-//import EditableTable from "./MatReqGrid";
 
-
-import EditableTable from "./MatReqGrid";
 import TempGrid from "./TempGrid";
 
 const FormItem = Form.Item;
@@ -28,8 +25,6 @@ class NewMatReq extends Component {
             applicantEmpId:
                 0
             ,
-            employees: []
-            ,
             details: [],
 
             folderNumber: {
@@ -41,28 +36,35 @@ class NewMatReq extends Component {
             date: {
                 text: moment('2019/01/01', dateFormat)
             }
+
         };
+        this.employees =[];
 
         this.handleInputChange = this.handleInputChange.bind(this);
-        /* this.handleApplicantChange = this.handleApplicantChange.bind(this);
-         this.handleFolderNumberChange = this.handleFolderNumberChange.bind(this);
-         this.handleSerialNumberChange = this.handleSerialNumberChange.bind(this);
-         this.handleDateChange = this.handleDateChange.bind(this);*/
-this.handleDetails=this.handleDetails.bind(this);
+        this.handleDetails=this.handleDetails.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.isFormInvalid = this.isFormInvalid.bind(this);
         this.loadEmployeeList = this.loadEmployeeList.bind(this);
     }
 
     handleInputChange(event) {
-        console.log(event);
+
         const target = event.target;
+
+
         if (target) {
-            const value = target.type === 'checkbox' ? target.checked : (target.type === 'date' ? moment(target.value, dateFormat) : target.value);
+            const value = target.type === 'checkbox' ? target.checked : target.value;
+
             const name = target.name;
-console.log(name + ":"+ value)
+
             this.setState({
                 [name]: {text: value}
+            });
+        }
+        ///in case of date>>>the event is the value
+        else{
+            this.setState({
+                date: {text: event}
             });
         }
     }
@@ -78,8 +80,8 @@ console.log(name + ":"+ value)
             var data = await p;
 
             const employees = this.state.employees.slice();
+            this.employees = employees.concat(data);
             this.setState({
-                employees: employees.concat(data),
                 isLoading: false
             });
         } catch (err) {
@@ -166,11 +168,8 @@ console.log(name + ":"+ value)
     }
 
 
-    componentDidMount() {
-        this.loadEmployeeList();
-    }
-
     render() {
+        this.loadEmployeeList();
         return (
 
             <div>
@@ -201,7 +200,7 @@ console.log(name + ":"+ value)
                                         value={this.state.applicantEmpId}
                                     >
                                         {
-                                            this.state.employees.map(emp =>
+                                            this.employees.map(emp =>
                                                 <Option key={emp.id}>{emp.name + " " + emp.lname}</Option>
                                             )
                                         }

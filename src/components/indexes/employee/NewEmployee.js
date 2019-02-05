@@ -46,9 +46,9 @@ class NewEmployee extends Component {
         this.handleFnameChange = this.handleFnameChange.bind(this);
         this.handleLnameChange = this.handleLnameChange.bind(this);
         this.handleMnameChange = this.handleMnameChange.bind(this);
-        this.handleNatIdChange = this.handleNatIdChange.bind(this);
+        this.handleNatIdChange = this.handleNatIdChange.bind(this);*/
         this.handleDepartmentChange = this.handleDepartmentChange.bind(this);
-        this.handlePositionChange = this.handlePositionChange.bind(this);*/
+        this.handlePositionChange = this.handlePositionChange.bind(this);
 
         this.handleInputChange = this.handleInputChange.bind(this);
 
@@ -206,7 +206,7 @@ class NewEmployee extends Component {
                 ...this.validateName(value)
             }
         });
-    }
+    }*/
     handlePositionChange(value) {
         this.setState({
             positionId: value
@@ -216,7 +216,7 @@ class NewEmployee extends Component {
         this.setState({
             departmentId: value
         });
-    }*/
+    }
     isFormInvalid() {
         if (this.state.name.validateStatus !== 'success') {
             return true;
@@ -295,7 +295,7 @@ class NewEmployee extends Component {
                                     <Select
                                         name="departmentId"
                                         defaultValue="1"
-                                        onChange={this.handleInputChange}
+                                        onChange={this.handleDepartmentChange}
                                         value={this.state.departmentId}
                                         >
                                         {
@@ -316,7 +316,7 @@ class NewEmployee extends Component {
                                     <Select
                                         name="positionId"
                                         defaultValue="1"
-                                        onChange={this.handleInputChange}
+                                        onChange={this.handlePositionChange}
                                         value={this.state.positionId}
                                         >
                                         {

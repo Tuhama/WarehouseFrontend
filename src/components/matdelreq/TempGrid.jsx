@@ -53,7 +53,6 @@ class TempGrid extends React.Component {
     };
 
     setDetails = () => {
-       // this.setState({ data });
         if(this.ref)
         {
             this.props.reqDetails(this.ref.table.getData());}
@@ -63,10 +62,17 @@ class TempGrid extends React.Component {
     clearData = () => {
         this.setState({ data: [] });
     };
+
     handleAdd = () => {
         this.ref.table.addRow({});
     };
+
+
+
     render() {
+
+        this.loadSubMaterials();//block rendering until data is loaded
+
         if(!this.state.subMaterials)
 
             return <span></span>
@@ -119,9 +125,6 @@ class TempGrid extends React.Component {
 
     }
 
-    componentDidMount() {
-        this.loadSubMaterials();
-    }
     async loadSubMaterials() {
 
         let p = getAllIndexes("subMaterials");

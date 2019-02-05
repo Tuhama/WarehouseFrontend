@@ -25,30 +25,11 @@ class FormHeader extends Component {
     constructor(props) {
         super(props);
         this.handleInputChange = this.handleInputChange.bind(this);
-/*        this.handleFolderNumberChange = this.handleFolderNumberChange.bind(this);
-        this.handleSerialNumberChange = this.handleSerialNumberChange.bind(this);
-
-        this.handleDateChange = this.handleDateChange.bind(this);*/
-       // this.isFormInvalid = this.isFormInvalid.bind(this);
     }
 
     handleInputChange(event) {
         this.props.onInputChange(event);
     }
-
-/*    handleFolderNumberChange(event) {
-       const value = event.target.value;
-       this.props.onFolderNumberChange(value);
-    }
-
-    handleSerialNumberChange(event) {
-        const value = event.target.value;
-        this.props.onSerialNumberChange(value);
-    }
-
-    handleDateChange(value) {
-        this.props.onDateChange(value);
-    }*/
 
     isFormInvalid() {
         if(this.state.name.validateStatus !== 'success') {
@@ -92,7 +73,7 @@ class FormHeader extends Component {
                           help={this.state.date.errorMsg}*/}
                 <FormItem  {...formItemLayout} label="التاريخ:"  >
                 <DatePicker name="date"  style={{fontSize: '10px'}}
-                            value={this.props.date}   format={dateFormat}  onChange={this.handleInputChange} />
+                            value={moment(this.props.date)}   format={dateFormat}  onChange={this.handleInputChange} />
                 </FormItem>
             </div>
         );
