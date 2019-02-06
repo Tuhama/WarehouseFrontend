@@ -22,10 +22,10 @@ class IndexList extends Component {
 
     async handleDelete(id) {
 
-        deleteIndex( this.props.indexType, id).done(response => {
-            console.log(this.props.indexType)
-            this.props.history.push("/"+this.props.indexType);
-        });
+        await deleteIndex( this.props.indexType, id);
+
+        this.props.history.push("/"+this.props.indexType);
+        }
 
 /*       if (!p) {
             return;
@@ -36,7 +36,7 @@ class IndexList extends Component {
         } catch (err) {
 
         }*/
-    }
+
     async loadIndexList() {
 
         let p = getAllIndexes( this.props.indexType );

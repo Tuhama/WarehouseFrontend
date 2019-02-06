@@ -54,6 +54,26 @@ const request = (options) => {
             })
         );
 };
+
+const requestDelete = (options) => {
+    const headers = new Headers({
+        'Content-Type': 'application/text',
+    })
+
+    const defaults = {headers: headers};
+    options = Object.assign({}, defaults, options);
+
+    return fetch(options.url, options).then(response =>{
+            if(!response.ok) {
+                console.log("rejected");
+                return false;
+            }
+            return true;}
+    );
+};
+
+
+
 export function getAllIndexes(indexType) {
     return request({
         url: API_BASE_URL + "/"+indexType,
@@ -76,7 +96,7 @@ export function createIndex(indexType,indexData) {
 }
 export function deleteIndex(indexType,indexId) {
 
-    return request({
+    return requestDelete({
         url: API_BASE_URL + "/" + indexType + "/" + indexId,
         method: 'DELETE',
     });
