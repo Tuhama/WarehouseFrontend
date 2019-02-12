@@ -39,20 +39,20 @@ class App extends Component {
 
                                         <Route exact path="/" render={() => <Redirect to='/matdelreq'/>}/>
 
-                                        <Route exact path="/positions"
-                                               component={() => <NewIndex indexType='positions'/>}/>
-                                        <Route exact path="/departments"
-                                               component={() => <NewIndex indexType='departments'/>}/>
-                                        <Route exact path="/contacts"
+                                        <Route  path="/positions"
+                                               component={() =>withRouter( <NewIndex indexType='positions'/>)}/>
+                                        <Route  path="/departments"
+                                               component={() =>withRouter(  <NewIndex indexType='departments'/>)}/>
+                                        <Route  path="/contacts"
                                                component={() => <NewIndex indexType='contacts'/>}/>
-                                        <Route exact path="/materials" component={NewMaterial}/>
+                                        <Route  path="/materials" component={NewMaterial}/>
 
 
-                                        <Route exact path="/submaterials" component={NewSubMaterial}/>
-                                        <Route exact path="/employees" component={NewEmployee}/>
+                                        <Route  path="/submaterials" component={NewSubMaterial}/>
+                                        <Route  path="/employees" component={NewEmployee}/>
 
 
-                                        <Route exact path="/matdelreq" component={NewMatReq}/>
+                                        <Route  path="/matdelreq" component={NewMatReq}/>
 
                                         {/*    <Route exact path="/"
                                render={(props) => <PollList isAuthenticated={this.state.isAuthenticated}
@@ -72,7 +72,7 @@ class App extends Component {
 
                         </Col>
                         <Col span={6}>
-                                <SideMenu/>
+                            <Route path="/" component={SideMenu} />
                         </Col>
                     </Row>
                     <Row style={{textAlign: 'center',height:'5vh'}}>
@@ -88,4 +88,4 @@ class App extends Component {
     }
 }
 
-export default withRouter(App);
+export default App;

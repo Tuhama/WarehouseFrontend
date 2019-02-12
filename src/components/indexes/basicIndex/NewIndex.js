@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 
-import { withRouter } from 'react-router-dom';
-
 import { createIndex } from '../../../util/APIUtils';
-
+import { withRouter} from 'react-router-dom';
 //import { MAX_CHOICES, POLL_QUESTION_MAX_LENGTH, POLL_CHOICE_MAX_LENGTH } from '../constants';
 import './NewIndex.css';
 import { Form, Input, Button, Icon,  Col, notification } from 'antd';

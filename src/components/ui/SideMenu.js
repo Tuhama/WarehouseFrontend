@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 
 
-import {Link} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 import {Menu, Icon} from 'antd';
-//import { withRouter } from "react-router";
+import { withRouter } from "react-router";
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -27,47 +27,47 @@ class SideMenu extends Component {
                 <SubMenu key="sub1" title={<span></span>}>
 
                     <Menu.Item key="7">
-                        <Link to="/matdelreq">
+                        <NavLink to="/matdelreq">
                             طلب تسليم مواد
-                        </Link>
+                        </NavLink>
                     </Menu.Item>
                     <Menu.Item key="8">
-                        <Link to="/internaldelivery">
+                        <NavLink to="/internaldelivery">
                             مذكرة تسليم
-                        </Link>
+                        </NavLink>
                     </Menu.Item>
                 </SubMenu>
 
                 <SubMenu key="sub2" title={<span>فهارس</span>}>
                     <Menu.Item key="1">
-                        <Link to="/employees">
+                        <NavLink to="/employees">
                             موظفين
-                        </Link>
+                        </NavLink>
                     </Menu.Item>
                     <Menu.Item key="2">
-                        <Link to="/positions">
+                        <NavLink to="/positions">
                             مواقع وظيفية
-                        </Link>
+                        </NavLink>
                     </Menu.Item>
                     <Menu.Item key="3">
-                        <Link to="/departments">
+                        <NavLink to="/departments">
                             أقسام
-                        </Link>
+                        </NavLink>
                     </Menu.Item>
                     <Menu.Item key="4">
-                        <Link to="/materials">
+                        <NavLink to="/materials">
                             أصناف رئيسية
-                        </Link>
+                        </NavLink>
                     </Menu.Item>
                     <Menu.Item key="5">
-                        <Link to="/submaterials">
+                        <NavLink to="/submaterials">
                             المواد
-                        </Link>
+                        </NavLink>
                     </Menu.Item>
                     <Menu.Item key="6">
-                        <Link to="/contacts">
+                        <NavLink to="/contacts">
                             الجهات الخارجية
-                        </Link>
+                        </NavLink>
                     </Menu.Item>
                 </SubMenu>
 
