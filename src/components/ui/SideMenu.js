@@ -19,19 +19,19 @@ class SideMenu extends Component {
                 //onClick={this.handleClick}
                 // style={{width: 256}}
                 //theme="dark"
-                defaultSelectedKeys={['7']}
+                defaultSelectedKeys={['11']}
                 defaultOpenKeys={['sub1']}
                 mode="inline"
             >
 
                 <SubMenu key="sub1" title={<span></span>}>
 
-                    <Menu.Item key="7">
+                    <Menu.Item key="11">
                         <NavLink to="/matdelreq">
                             طلب تسليم مواد
                         </NavLink>
                     </Menu.Item>
-                    <Menu.Item key="8">
+                    <Menu.Item key="12">
                         <NavLink to="/internaldelivery">
                             مذكرة تسليم
                         </NavLink>
@@ -68,6 +68,18 @@ class SideMenu extends Component {
                         <NavLink to="/contacts">
                             الجهات الخارجية
                         </NavLink>
+                    </Menu.Item>
+                    <Menu.Item key="7">
+                        <NavLink to="/units">الواحدات</NavLink>
+                    </Menu.Item>
+                    <Menu.Item key="8">
+                        <NavLink to="/users">المستخدمين</NavLink>
+                    </Menu.Item>
+                    <Menu.Item key="9">
+                        <NavLink to="/temp1">الواحدات</NavLink>
+                    </Menu.Item>
+                    <Menu.Item key="10">
+                        <NavLink to="/temp2">المستخدمين</NavLink>
                     </Menu.Item>
                 </SubMenu>
 

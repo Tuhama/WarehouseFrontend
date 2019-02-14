@@ -40,14 +40,25 @@ class App extends Component {
                                         <Route exact path="/" render={() => <Redirect to='/matdelreq'/>}/>
 
                                         <Route  path="/positions"
-                                               component={() =>withRouter( <NewIndex indexType='positions'/>)}/>
+                                               component={ () => <NewIndex indexType='positions'/>}/>
                                         <Route  path="/departments"
-                                               component={() =>withRouter(  <NewIndex indexType='departments'/>)}/>
+                                               component={ () => <NewIndex indexType='departments'/>}/>
                                         <Route  path="/contacts"
                                                component={() => <NewIndex indexType='contacts'/>}/>
+                                        <Route
+                                            exact
+                                            path="/units"
+                                            component={() => <NewIndex indexType="units" />}
+                                        />
+                                        <Route
+                                            exact
+                                            path="/users"
+                                            component={ () => <NewIndex indexType="users" />}
+                                        />
+
+
+
                                         <Route  path="/materials" component={NewMaterial}/>
-
-
                                         <Route  path="/submaterials" component={NewSubMaterial}/>
                                         <Route  path="/employees" component={NewEmployee}/>
 
