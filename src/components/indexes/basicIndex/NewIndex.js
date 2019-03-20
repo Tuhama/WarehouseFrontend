@@ -1,32 +1,67 @@
 import React, { Component } from 'react';
 
-import { createIndex } from '../../../util/APIUtils';
+import {createIndex, getAllIndexes} from '../../../util/APIUtils';
 import { withRouter} from 'react-router-dom';
-//import { MAX_CHOICES, POLL_QUESTION_MAX_LENGTH, POLL_CHOICE_MAX_LENGTH } from '../constants';
+import { NAME_MAX_LENGTH, NAME_MIN_LENGTH, APP_NAME } from '../../../constants';
 import './NewIndex.css';
-import { Form, Input, Button, Icon,  Col, notification } from 'antd';
+import { Form, Input, Button, Icon, notification } from 'antd';
 import IndexList from './IndexList';
+import {AuthConsumer} from "../../../user/AuthContext";
+import LoadingIndicator from "../../ui/LoadingIndicator";
 const FormItem = Form.Item;
 const  FormText  = Input;
 
 class NewIndex extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
             name: {
                 text: ''
-            }
+            },
+            indexes: [],
+            isLoading: false
         };
+        this.loadIndexList = this.loadIndexList.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.isFormInvalid = this.isFormInvalid.bind(this);
     }
 
 
+    loadIndexList() {
+        let promise = getAllIndexes( this.props.indexType );
+
+        if (!promise) {
+            return;
+        }
+
+        this.setState({
+            isLoading: true
+        });
+
+        promise
+            .then(response => {
+                this.setState({
+                    indexes: response,
+                    isLoading: false
+                });
+            }).catch(err => {
+            this.setState({
+                indexes: null,
+                isLoading: false
+            });
+        })
+    }
 
 
-    handleSubmit(event) {
+    componentDidMount() {
+        this.loadIndexList();
+    }
+
+    handleSubmit(event,handleLogout) {
         event.preventDefault();
+
         const indexData = {
             name: this.state.name.text,
         };
@@ -34,16 +69,16 @@ class NewIndex extends Component {
         createIndex(this.props.indexType,indexData)
             .then(response => {
                 this.props.history.push("/"+this.props.indexType);
-            })/*.catch(error => {
+            }).catch(error => {
             if(error.status === 401) {
-                this.props.handleLogout('/login', 'error', 'You have been logged out. Please login create poll.');
+                handleLogout('/login', 'error', 'الرجاء تسجيل الدخول للقيام بالعملية!');
             } else {
                 notification.error({
-                    message: 'Polling App',
-                    description: error.message || 'Sorry! Something went wrong. Please try again!'
+                    message: APP_NAME,
+                    description: error.message || 'فشل العملية..يرجى المحاولة مرة ثانية.'
                 });
             }
-        })*/;
+        });
     }
 
     validateName = (nameText) => {
@@ -52,12 +87,18 @@ class NewIndex extends Component {
                 validateStatus: 'error',
                 errorMsg: 'الرجاء ادخال اسم'
             }
-        } /*else if (nameText.length > POLL_QUESTION_MAX_LENGTH) {
+        } else if (nameText.length < NAME_MIN_LENGTH) {
             return {
                 validateStatus: 'error',
-                errorMsg: `Question is too long (Maximum ${POLL_QUESTION_MAX_LENGTH} characters allowed)`
+                errorMsg: `الاسم قصير جدا...لا يسمح بأقل من ${NAME_MIN_LENGTH} حرف`
             }
-        } */else {
+        }
+        else if (nameText.length > NAME_MAX_LENGTH) {
+            return {
+                validateStatus: 'error',
+                errorMsg: `الاسم طويل جدا...لا يسمح بأكثر من ${NAME_MAX_LENGTH} حرف`
+            }
+        } else {
             return {
                 validateStatus: 'success',
                 errorMsg: null
@@ -85,12 +126,21 @@ class NewIndex extends Component {
     render() {
 
         return (
+            <AuthConsumer>
+                { ({handleLogout})=>
 
             <div className="new-index-container">
-                <IndexList indexType={this.props.indexType}/>
+
+                <IndexList indexType={this.props.indexType} indexes={this.state.indexes}/>
+
+                {
+                    this.state.isLoading ?
+                        <LoadingIndicator />: null
+                }
+
                 <h1 className="page-title">إضافة جديد:</h1>
                 <div className="new-index-content">
-                    <Form onSubmit={this.handleSubmit} className="create-index-form">
+                    <Form onSubmit={(event)=>this.handleSubmit(event,handleLogout)} className="create-index-form">
                                              <FormItem validateStatus={this.state.name.validateStatus}
                                   help={this.state.name.errorMsg} className="index-form-row">
                      <FormText
@@ -112,8 +162,9 @@ class NewIndex extends Component {
                         </FormItem>
                     </Form>
                 </div>
-            </div>
+            </div>}
+            </AuthConsumer>
         );
     }
 }
-export default withRouter(NewIndex);
+export default NewIndex;

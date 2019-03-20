@@ -1,62 +1,23 @@
 import React, {Component} from 'react';
 
-import {getAllEmployees, deleteEmployee} from '../../../util/APIUtils';
+import { deleteEmployee } from '../../../util/APIUtils';
 
 
 import { Table, Divider, Tag } from 'antd';
-import withRouter from 'react-router-dom';
-
 
 
 class EmployeeList extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            employees: [],
-            isLoading: false
-        };
-        this.loadEmployeeList = this.loadEmployeeList.bind(this);
+
         this.handleDelete = this.handleDelete.bind(this);
     }
-    async handleDelete(id) {
-
+     handleDelete(id) {
         let p = deleteEmployee(id);
-
-        if (!p) {
-            return;
+//reload page
+         this.props.history.push("/");
         }
-        try {
-            var data = await p;
 
-        } catch (err) {
-
-        }
-    }
-    async loadEmployeeList() {
-
-        let p = getAllEmployees();
-
-        if (!p) {
-            return;
-        }
-        try {
-            var data = await p;
-
-            const employees = this.state.employees.slice();
-            this.setState({
-                employees: employees.concat(data),
-                isLoading: false
-            });
-        } catch (err) {
-            this.setState({
-                isLoading: false
-            });
-        }
-    }
-
-    componentDidMount() {
-        this.loadEmployeeList();
-    }
 
     /*    componentDidUpdate(nextProps) {
             if(this.props.isAuthenticated !== nextProps.isAuthenticated) {
@@ -126,25 +87,21 @@ class EmployeeList extends Component {
                 key: 'action',
                 className:'table-header',
                 render: (text, record) => (
-                    <button onClick={this.handleDelete(record.id)}>حذف</button>
+                    <button onClick={() => this.handleDelete(record.id)}>حذف</button>
                 ),
             }];
 
         return (
             <div className="employees-container">
-                <Table size="small" columns={columns} dataSource={ this.state.employees}  rowKey="id"/>
+                <Table size="small" columns={columns} dataSource={ this.props.employees}  rowKey="id"/>
 
                 {
-                    !this.state.isLoading && this.state.employees.length === 0 ? (
+                    this.props.employees.length === 0 ? (
                         <div className="no-employees-found">
                             <span>لا يوجد موظفين</span>
                         </div>
                     ) : null
                 }
-                {/*                {
-                    this.state.isLoading ?
-                        <LoadingIndicator />: null
-                }*/}
             </div>
         );
     }

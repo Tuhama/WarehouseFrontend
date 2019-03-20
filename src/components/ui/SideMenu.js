@@ -1,37 +1,41 @@
 import React, {Component} from 'react';
 
 
-import {NavLink} from 'react-router-dom';
+import {withRouter,NavLink} from 'react-router-dom';
 import {Menu, Icon} from 'antd';
-import { withRouter } from "react-router";
+import PropTypes from 'prop-types';
+
 
 const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
 
 
 class SideMenu extends Component {
 
-
+    static propTypes = {
+        location: PropTypes.object.isRequired
+    }
     render() {
+        const { location } = this.props;
         return (
 
             <Menu
                 //onClick={this.handleClick}
                 // style={{width: 256}}
                 //theme="dark"
-                defaultSelectedKeys={['11']}
+                selectedKeys={[location.pathname]}
+                //defaultSelectedKeys={['11']}
                 defaultOpenKeys={['sub1']}
                 mode="inline"
             >
 
                 <SubMenu key="sub1" title={<span></span>}>
 
-                    <Menu.Item key="11">
-                        <NavLink to="/matdelreq">
+                    <Menu.Item key="/newmatdelreq">
+                        <NavLink to="/newmatdelreq">
                             طلب تسليم مواد
                         </NavLink>
                     </Menu.Item>
-                    <Menu.Item key="12">
+                    <Menu.Item key="/internaldelivery">
                         <NavLink to="/internaldelivery">
                             مذكرة تسليم
                         </NavLink>
@@ -39,48 +43,43 @@ class SideMenu extends Component {
                 </SubMenu>
 
                 <SubMenu key="sub2" title={<span>فهارس</span>}>
-                    <Menu.Item key="1">
+                    <Menu.Item key="/employees">
                         <NavLink to="/employees">
                             موظفين
                         </NavLink>
                     </Menu.Item>
-                    <Menu.Item key="2">
+                    <Menu.Item key="/positions">
                         <NavLink to="/positions">
                             مواقع وظيفية
                         </NavLink>
                     </Menu.Item>
-                    <Menu.Item key="3">
+                    <Menu.Item key="/departments">
                         <NavLink to="/departments">
                             أقسام
                         </NavLink>
                     </Menu.Item>
-                    <Menu.Item key="4">
+                    <Menu.Item key="/materials">
                         <NavLink to="/materials">
                             أصناف رئيسية
                         </NavLink>
                     </Menu.Item>
-                    <Menu.Item key="5">
+                    <Menu.Item key="/submaterials">
                         <NavLink to="/submaterials">
                             المواد
                         </NavLink>
                     </Menu.Item>
-                    <Menu.Item key="6">
+                    <Menu.Item key="/contacts">
                         <NavLink to="/contacts">
                             الجهات الخارجية
                         </NavLink>
                     </Menu.Item>
-                    <Menu.Item key="7">
+                    <Menu.Item key="/units">
                         <NavLink to="/units">الواحدات</NavLink>
                     </Menu.Item>
-                    <Menu.Item key="8">
+                    <Menu.Item key="/users">
                         <NavLink to="/users">المستخدمين</NavLink>
                     </Menu.Item>
-                    <Menu.Item key="9">
-                        <NavLink to="/temp1">الواحدات</NavLink>
-                    </Menu.Item>
-                    <Menu.Item key="10">
-                        <NavLink to="/temp2">المستخدمين</NavLink>
-                    </Menu.Item>
+
                 </SubMenu>
 
             </Menu>
@@ -90,4 +89,4 @@ class SideMenu extends Component {
     }
 }
 
-export default SideMenu;
+export default withRouter(SideMenu);

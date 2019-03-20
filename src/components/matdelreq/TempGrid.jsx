@@ -9,7 +9,7 @@ import "react-tabulator/lib/styles.css"; // default theme
 import "react-tabulator/css/bootstrap/tabulator_bootstrap.min.css"; // use Theme(s)
 
 import { ReactTabulator } from "react-tabulator";
-import {getAllIndexes} from "../../util/APIUtils";
+import {getAllEmployees, getAllIndexes} from "../../util/APIUtils";
 import {
    Button
 } from 'antd';
@@ -39,7 +39,7 @@ class TempGrid extends React.Component {
         super(props);
         this.state = {
             data: [],
-            subMaterials:null,
+           // subMaterials:null
         };
 
         this.ref = null;
@@ -55,7 +55,8 @@ class TempGrid extends React.Component {
     setDetails = () => {
         if(this.ref)
         {
-            this.props.reqDetails(this.ref.table.getData());}
+            this.props.reqDetails(this.ref.table.getData());
+        }
 
     };
 
@@ -64,16 +65,14 @@ class TempGrid extends React.Component {
     };
 
     handleAdd = () => {
-        this.ref.table.addRow({});
+        this.ref.table.addRow({subMaterial:this.props.subMaterials[0]});
     };
-
-
 
     render() {
 
-        this.loadSubMaterials();//block rendering until data is loaded
+       //block rendering until data is loaded
 
-        if(!this.state.subMaterials)
+        if(!this.props.subMaterials)
 
             return <span></span>
         else {
@@ -88,11 +87,13 @@ class TempGrid extends React.Component {
                     field: 'subMaterial',
                     width: '35%',
                     editor: "select",
+                    formatter:"lookup",
+                    formatterParams:this.props.subMaterials,
                     editorParams: {
                         allowEmpty: true,
                         showListOnEmpty: true,
-                        values: this.state.subMaterials
-                    },
+                        values: this.props.subMaterials
+                    }
                 }, {
                     title: 'الكمية',
                     field: 'amount',
@@ -114,7 +115,7 @@ class TempGrid extends React.Component {
                     <ReactTabulator
                         ref={ref => (this.ref = ref)}
                         columns={editableColumns}
-                        data={this.state.data}
+                        data={this.props.data}
                         footerElement={<span>Footer</span>}
                         cellEdited={this.setDetails}
                     />
@@ -125,24 +126,6 @@ class TempGrid extends React.Component {
 
     }
 
-    async loadSubMaterials() {
 
-        let p = getAllIndexes("subMaterials");
+}export default TempGrid;
 
-        if (!p) {
-            return;
-        }
-        try {
-            let data = await p;
-            let options = {};
-            data.map(sm => {
-                options[sm.name]= sm.name;
-
-                return options;});
-            this.state.subMaterials =options;
-        } catch (err) {
-        }
-    }
-}
-
-export default TempGrid;

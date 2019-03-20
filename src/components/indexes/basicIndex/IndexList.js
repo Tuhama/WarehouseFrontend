@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import { withRouter } from 'react-router-dom';
 
 import './IndexList.css';
-import {getAllIndexes, deleteIndex} from '../../../util/APIUtils';
+import { deleteIndex } from '../../../util/APIUtils';
 
 import { Table } from 'antd';
 
@@ -12,59 +12,21 @@ class IndexList extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            indexs: [],
+/*        this.state = {
+            indexes: [],
             isLoading: false
         };
-        this.loadIndexList = this.loadIndexList.bind(this);
+        this.loadIndexList = this.loadIndexList.bind(this);*/
         this.handleDelete = this.handleDelete.bind(this);
     }
 
-    async handleDelete(id) {
+     handleDelete(id) {
 
-        await deleteIndex( this.props.indexType, id);
-
+         deleteIndex( this.props.indexType, id);
+//reload page
         this.props.history.push("/"+this.props.indexType);
         }
 
-/*       if (!p) {
-            return;
-        }
-        try {
-            var data = await p;
-
-        } catch (err) {
-
-        }*/
-
-    async loadIndexList() {
-
-        let p = getAllIndexes( this.props.indexType );
-
-        if (!p) {
-            return;
-        }
-
-            var data = await p;
-            this.setState({
-                indexs: data
-            })
-/*
-            const indexs = this.state.indexs.slice();
-            this.setState({
-                indexs: indexs.concat(data),
-                isLoading: false
-            });
-        } catch (err) {
-            this.setState({
-                isLoading: false
-            });
-        }*/
-    }
-
-    componentDidMount() {
-        this.loadIndexList();
-    }
 
     /*    componentDidUpdate(nextProps) {
             if(this.props.isAuthenticated !== nextProps.isAuthenticated) {
@@ -95,19 +57,14 @@ class IndexList extends Component {
 
         return (
             <div className="indexs-container">
-                <Table size="small" columns={columns} dataSource={ this.state.indexs} rowKey="id" />
+                <Table size="small" columns={columns} dataSource={ this.props.indexes} rowKey="id" />
 
-                {
-                    !this.state.isLoading && this.state.indexs.length === 0 ? (
+                {this.props.indexes.length === 0 ? (
                         <div className="no-indexs-found">
                             <span>لا يوجد بيانات</span>
                         </div>
                     ) : null
-                }
-                {/*                {
-                    this.state.isLoading ?
-                        <LoadingIndicator />: null
-                }*/}
+               }
             </div>
         );
     }

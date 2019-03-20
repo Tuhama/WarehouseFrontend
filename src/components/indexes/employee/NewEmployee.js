@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 
 import EmployeeList from './EmployeeList';
-import {createEmployee, getAllIndexes} from '../../../util/APIUtils';
+import {createEmployee, getAllEmployees, getAllIndexes} from '../../../util/APIUtils';
 
 
 import {Form, Input, Button, Select, InputNumber } from 'antd';
+import LoadingIndicator from "../../ui/LoadingIndicator";
 
 const FormItem = Form.Item;
 const FormText = Input;
@@ -37,16 +38,14 @@ class NewEmployee extends Component {
             ,
             positions: []
             ,
-            departments: []
+            departments: [],
+            employees: [],
+            isLoading: false
 
         };
+        //this.loadEmployeeList = this.loadEmployeeList.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-/*
-        this.handleNameChange = this.handleNameChange.bind(this);
-        this.handleFnameChange = this.handleFnameChange.bind(this);
-        this.handleLnameChange = this.handleLnameChange.bind(this);
-        this.handleMnameChange = this.handleMnameChange.bind(this);
-        this.handleNatIdChange = this.handleNatIdChange.bind(this);*/
+
         this.handleDepartmentChange = this.handleDepartmentChange.bind(this);
         this.handlePositionChange = this.handlePositionChange.bind(this);
 
@@ -54,6 +53,7 @@ class NewEmployee extends Component {
 
         this.isFormInvalid = this.isFormInvalid.bind(this);
     }
+
 
     handleInputChange(event) {
         const target = event.target;
@@ -64,53 +64,86 @@ class NewEmployee extends Component {
             [name]: {text: value}
         });
     }
-    async loadPositions() {
 
-        let p = getAllIndexes("positions");
+    loadEmployeeList() {
+        let promise =  getAllEmployees();
 
-        if (!p) {
+        if (!promise) {
             return;
         }
-        try {
-            var data = await p;
 
-            const positions = this.state.positions.slice();
+        this.setState({
+            isLoading: true
+        });
+
+        promise
+            .then(response => {
+                this.setState({
+                    employees: response,
+                    isLoading: false
+                });
+            }).catch(err => {
             this.setState({
-                positions: positions.concat(data),
+                employees: null,
                 isLoading: false
             });
-        } catch (err) {
-            this.setState({
-                isLoading: false
-            });
-        }
+        })
     }
 
-    async loadDepartments() {
+     loadPositions() {
+         let promise =  getAllIndexes("positions");
 
-        let p = getAllIndexes("departments");
+         if (!promise) {
+             return;
+         }
 
-        if (!p) {
-            return;
-        }
-        try {
-            var data = await p;
+         this.setState({
+             isLoading: true
+         });
 
-            const departments = this.state.departments.slice();
-            this.setState({
-                departments: departments.concat(data),
-                isLoading: false
-            });
-        } catch (err) {
-            this.setState({
-                isLoading: false
-            });
-        }
+         promise
+             .then(response => {
+                 this.setState({
+                     positions: response,
+                     isLoading: false
+                 });
+             }).catch(err => {
+             this.setState({
+                 positions: null,
+                 isLoading: false
+             });
+         })
+     }
+
+     loadDepartments() {
+         let promise =  getAllIndexes("departments");
+
+         if (!promise) {
+             return;
+         }
+
+         this.setState({
+             isLoading: true
+         });
+
+         promise
+             .then(response => {
+                 this.setState({
+                     departments: response,
+                     isLoading: false
+                 });
+             }).catch(err => {
+             this.setState({
+                 departments: null,
+                 isLoading: false
+             });
+         })
     }
 
     componentDidMount() {
         this.loadDepartments();
         this.loadPositions();
+        this.loadEmployeeList();
     }
 
     handleSubmit(event) {
@@ -122,8 +155,8 @@ class NewEmployee extends Component {
             fname: this.state.fname.text,
             mname: this.state.mname.text,
             natId: this.state.natId.text,
-            department: this.state.departments.find(x => x.id == this.state.departmentId),
-            position: this.state.positions.find(x => x.id == this.state.positionId),
+            department: this.state.departments.find(x => x.id === this.state.departmentId),
+            position: this.state.positions.find(x => x.id === this.state.positionId),
         };
 
         createEmployee(employeeData)
@@ -161,52 +194,6 @@ class NewEmployee extends Component {
         }
     }
 
-    /*handleNameChange(event) {
-        const value = event.target.value;
-        this.setState({
-            name: {
-                text: value,
-                ...this.validateName(value)
-            }
-        });
-    }
-    handleFnameChange(event) {
-        const value = event.target.value;
-        this.setState({
-            fname: {
-                text: value,
-                ...this.validateName(value)
-            }
-        });
-    }
-    handleLnameChange(event) {
-        const value = event.target.value;
-        this.setState({
-            lname: {
-                text: value,
-                ...this.validateName(value)
-            }
-        });
-    }
-    handleMnameChange(event) {
-        const value = event.target.value;
-        this.setState({
-            mname: {
-                text: value,
-                ...this.validateName(value)
-            }
-        });
-    }
-    handleNatIdChange(event) {
-        console.log(event);
-        const value = event.target.value;
-        this.setState({
-            natId: {
-                text: value,
-                ...this.validateName(value)
-            }
-        });
-    }*/
     handlePositionChange(value) {
         this.setState({
             positionId: value
@@ -228,7 +215,15 @@ class NewEmployee extends Component {
         return (
 
             <div className="new-index-container">
-                <EmployeeList/>
+
+                <EmployeeList employees={this.state.employees}/>
+
+                {
+                    this.state.isLoading ?
+                        <LoadingIndicator />: null
+                }
+
+
                 <h1 className="page-title">موظف جديد</h1>
                 <div className="new-index-content">
                     <Form onSubmit={this.handleSubmit} className="create-position-form">

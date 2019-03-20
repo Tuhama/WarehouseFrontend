@@ -4,67 +4,63 @@ import './App.css';
 import { withRouter,Route, Switch, Redirect} from 'react-router-dom';
 
 import SideMenu from './components/ui/SideMenu';
+import Header from './components/ui/Header';
 
-//import NewPosition from './components/indexes/position/NewPosition';
-//import NewDepartment from './components/indexes/department/NewDepartment';
-//import NewMaterial from './components/indexes/material/NewMaterial';
 import NewEmployee from './components/indexes/employee/NewEmployee';
 import NewSubMaterial from './components/indexes/subMaterial/NewSubMaterial';
 import NewMaterial from './components/indexes/material/NewMaterial';
 import NewMatReq from './components/matdelreq/NewMatReq';
+import MatReq from './components/matdelreq/MatReq';
 import NewIndex from './components/indexes/basicIndex/NewIndex';
 
-import {LocaleProvider,  Row, Col} from 'antd';
+import { LocaleProvider,  Row, Col} from 'antd';
 import ar from 'antd/lib/locale-provider/ar_EG';
+import { AuthProvider } from "./user/AuthContext";
 
 
 
 class App extends Component {
-    render() {
-        return (
 
+
+    render() {
+        let params = new URLSearchParams(this.props.location.search);
+        return (
+            <AuthProvider>
             <LocaleProvider locale={ar}>
 
-
-                {/*<Layout style={{direction: 'rtl', minHeight: '100vh'}}>*/}
                 <div style={{direction: 'rtl', height: '100vh',width:'100vw'}}>
-                    <Row  style={{textAlign: 'center',height:'15vh',backgroundColor:'rgb(24, 144, 255)'}}>
-                        <h2>برنامج إدارة المستودع</h2>
-                    </Row>
+                    <Header />
                     <Row style={{height:'80vh'}}>
 
                         <Col span={18}>
 
                                 <Switch>
 
-                                        <Route exact path="/" render={() => <Redirect to='/matdelreq'/>}/>
+                                        <Route exact path="/" render={() => <Redirect to='/newmatdelreq'/>}/>
 
                                         <Route  path="/positions"
                                                component={ () => <NewIndex indexType='positions'/>}/>
                                         <Route  path="/departments"
                                                component={ () => <NewIndex indexType='departments'/>}/>
+
                                         <Route  path="/contacts"
                                                component={() => <NewIndex indexType='contacts'/>}/>
                                         <Route
                                             exact
                                             path="/units"
-                                            component={() => <NewIndex indexType="units" />}
-                                        />
+                                            component={() => <NewIndex indexType="units" />}/>
                                         <Route
                                             exact
                                             path="/users"
-                                            component={ () => <NewIndex indexType="users" />}
-                                        />
-
-
+                                            component={ () => <NewIndex indexType="users" />}/>
 
                                         <Route  path="/materials" component={NewMaterial}/>
                                         <Route  path="/submaterials" component={NewSubMaterial}/>
                                         <Route  path="/employees" component={NewEmployee}/>
 
 
-                                        <Route  path="/matdelreq" component={NewMatReq}/>
-
+                                        <Route  path="/newmatdelreq" component={NewMatReq}/>
+                                    <Route  path="/matdelreq" component={() => <MatReq id={params.get("id")}/>}/>
                                         {/*    <Route exact path="/"
                                render={(props) => <PollList isAuthenticated={this.state.isAuthenticated}
                                                             currentUser={this.state.currentUser} handleLogout={this.handleLogout} {...props} />}>
@@ -83,7 +79,7 @@ class App extends Component {
 
                         </Col>
                         <Col span={6}>
-                            <Route path="/" component={SideMenu} />
+                            <Route path="/" render={(props) => <SideMenu {...props}/>} />
                         </Col>
                     </Row>
                     <Row style={{textAlign: 'center',height:'5vh'}}>
@@ -93,10 +89,10 @@ class App extends Component {
                     </Row>
                 </div>
 
-
             </LocaleProvider>
+            </AuthProvider>
         );
     }
 }
 
-export default App;
+export default withRouter(App);
