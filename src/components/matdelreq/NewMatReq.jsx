@@ -179,7 +179,7 @@ let afterReplace=[];
             afterReplace.push(d);
             return afterReplace;
         });
-console.log(afterReplace);
+
 
          const reqData = {
              date: this.state.date.text,

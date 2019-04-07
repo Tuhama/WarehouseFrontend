@@ -205,9 +205,9 @@ class NewEmployee extends Component {
         });
     }
     isFormInvalid() {
-        if (this.state.name.validateStatus !== 'success') {
-            return true;
-        }
+        //if (this.state.name.validateStatus !== 'success') {
+            return false;
+        //}
     }
 
     render() {
