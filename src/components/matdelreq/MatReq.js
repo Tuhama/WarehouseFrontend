@@ -15,10 +15,14 @@ export default class MatReq extends Component {
         //don't load async inside render
         if (!this.state.employees)
 
-            return <span></span>
+            return <span>
+                لا يوجد بيانات
+            </span>
         else {
             return (
                 <div>
+
+
                     {this.props.id}
                 </div>
 

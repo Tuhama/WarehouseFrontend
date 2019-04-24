@@ -25,7 +25,7 @@ class AuthProvider extends React.Component {
         notification.config({
             placement: 'bottomRight',
             bottom: 20,
-            duration: 1,
+            duration: 3,
         });
 
         this.handleLogin = this.handleLogin.bind(this);

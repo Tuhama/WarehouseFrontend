@@ -174,9 +174,13 @@ class NewMatReq extends Component {
 let afterReplace=[];
         this.state.details.map(d =>
         {
-           // afterReplace=d;
-            d.subMaterial=this.state.subMaterials[parseInt(d.subMaterial)];
-            afterReplace.push(d);
+           let dafter=d;
+
+           let i=parseInt(d.subMaterial);
+
+            dafter.subMaterial=this.state.subMaterials[(i-1)];
+
+            afterReplace.push(dafter);
             return afterReplace;
         });
 
@@ -186,15 +190,15 @@ let afterReplace=[];
              serial: this.state.serialNumber.text,
              folderNum: this.state.folderNumber.text,
 
-             employeeByApplicantEmpId: this.state.employees.find(x => x.id == this.state.applicantEmpId),
+             applicant: this.state.employees.find(x => x.id == this.state.applicantEmpId),
 
-             matDelReqDetails: afterReplace
+             matDelReqDetails: afterReplace,
          };
 
          createMatReq(reqData)
              .then(response => {
-
-                 this.props.history.push("/matdelreq?id="+response.id);
+console.log(response);
+                 this.props.history.push("/matdelreq?id="+response.location);
              }).catch(error => {
              if(error.status === 401) {
                  handleLogout('/login', 'error', 'الرجاء تسجيل الدخول للقيام بالعملية!');
